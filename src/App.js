@@ -89,7 +89,7 @@ function App() {
               bottom: '10%',
               left: '50%',
               transform: 'translateX(-50%)',
-              display: currentTime >= caption.time && currentTime < caption.time + 2 ? 'block' : 'none'
+              display: currentTime >= caption.time && currentTime < caption.time + 1 ? 'block' : 'none'
             }}
           >
             {caption.text}
