@@ -1,7 +1,7 @@
 # Video Caption
 
 This is a web app for adding captions in video.
-live link : 
+live link : https://videocaptionadder.netlify.app/
 
 ## Table of Contents
 
