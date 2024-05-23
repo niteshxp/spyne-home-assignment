@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import './App.css';
 
@@ -8,12 +8,29 @@ function App() {
   const [timestamp, setTimestamp] = useState('');
   const [captions, setCaptions] = useState([]);
   const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
 
   const addCaption = () => {
-    setCaptions([...captions, { text: captionText, time: timestamp }]);
-    setCaptionText('');
-    setTimestamp('');
+    if (captionText && timestamp) {
+      setCaptions([...captions, { text: captionText, time: parseFloat(timestamp) }]);
+      setCaptionText('');
+      setTimestamp('');
+    }
   };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Enter') {
+        addCaption();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [captionText, timestamp]);
 
   return (
     <div className="container mx-auto p-4">
@@ -51,7 +68,7 @@ function App() {
       >
         Add Caption
       </button>
-      <div className="mt-8">
+      <div className="mt-8 relative">
         {videoUrl && (
           <ReactPlayer
             url={videoUrl}
@@ -59,6 +76,7 @@ function App() {
             playing={playing}
             onPlay={() => setPlaying(true)}
             onPause={() => setPlaying(false)}
+            onProgress={({ playedSeconds }) => setCurrentTime(playedSeconds)}
             width="100%"
             height="auto"
           />
@@ -71,7 +89,7 @@ function App() {
               bottom: '10%',
               left: '50%',
               transform: 'translateX(-50%)',
-              display: playing && caption.time <= ReactPlayer.currentTime ? 'block' : 'none'
+              display: currentTime >= caption.time && currentTime < caption.time + 2 ? 'block' : 'none'
             }}
           >
             {caption.text}
