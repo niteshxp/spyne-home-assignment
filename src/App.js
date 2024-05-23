@@ -9,7 +9,7 @@ function App() {
   const [captions, setCaptions] = useState([]);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-
+  console.log(captions);
   const addCaption = () => {
     if (captionText && timestamp) {
       setCaptions([...captions, { text: captionText, time: parseFloat(timestamp) }]);
@@ -78,13 +78,13 @@ function App() {
             onPause={() => setPlaying(false)}
             onProgress={({ playedSeconds }) => setCurrentTime(playedSeconds)}
             width="100%"
-            height="auto"
+            height="400px"
           />
         )}
         {captions.map((caption, index) => (
           <div
             key={index}
-            className="absolute bg-black text-white p-2 rounded"
+            className="absolute bg-black/[0.7] text-white p-1 px-2 rounded"
             style={{
               bottom: '10%',
               left: '50%',
